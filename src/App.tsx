@@ -61,6 +61,7 @@ import { supabase } from "./database/supabase";
 import Auth from "./components/Auth";
 
 export default function App() {
+  console.log(import.meta.env);
   const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
