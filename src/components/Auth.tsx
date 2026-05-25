@@ -54,50 +54,44 @@ export default function Auth() {
           </Typography>
         </Card.Header>
 
-        <Form
-          onSubmit={() => {
-            handleAuth();
-          }}
-        >
-          <Card.Content className="flex flex-col gap-4 mb-4">
-            <Input
-              type="email"
-              placeholder="email@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <Card.Content className="flex flex-col gap-4 mb-4">
+          <Input
+            type="email"
+            placeholder="email@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Card.Content>
+          <Input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Card.Content>
 
-          <Card.Footer className="flex flex-col gap-3">
-            <Button isPending={loading} className="w-full" type="submit">
-              {({ isPending }) => (
-                <>
-                  {isPending ? <Spinner color="current" size="sm" /> : null}
-                  {mode === "login" ? "Login" : "Create account"}
-                </>
-              )}
-            </Button>
-            <Button
-              variant="primary"
-              className="w-full"
-              onPress={() => setMode(mode === "login" ? "signup" : "login")}
-            >
-              {mode === "login"
-                ? "No account? Sign up"
-                : "Already have an account? Login"}
-            </Button>
-            {error && (
-              <ErrorMessage className="text-danger">{error}</ErrorMessage>
+        <Card.Footer className="flex flex-col gap-3">
+          <Button isPending={loading} className="w-full" onPress={handleAuth}>
+            {({ isPending }) => (
+              <>
+                {isPending ? <Spinner color="current" size="sm" /> : null}
+                {mode === "login" ? "Login" : "Create account"}
+              </>
             )}
-          </Card.Footer>
-        </Form>
+          </Button>
+          <Button
+            variant="primary"
+            className="w-full"
+            onPress={() => setMode(mode === "login" ? "signup" : "login")}
+          >
+            {mode === "login"
+              ? "No account? Sign up"
+              : "Already have an account? Login"}
+          </Button>
+          {error && (
+            <ErrorMessage className="text-danger">{error}</ErrorMessage>
+          )}
+        </Card.Footer>
       </Card>
     </div>
   );
