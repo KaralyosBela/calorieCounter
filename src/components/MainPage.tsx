@@ -1,23 +1,12 @@
-import { Table, Tabs } from "@heroui/react";
-import { useState, useEffect } from "react";
-import { supabase } from "../database/supabase";
+import { Label, SearchField, Table, Tabs } from "@heroui/react";
+import { AddFoodForm } from "./AddFoodForm";
+import { useGetFoods } from "../hooks/useGetFoods";
+
+// const MotionButton = motion(Button);
+
 export const MainPage = () => {
-  const [foods, setFoods] = useState<any[]>([]);
-
-  useEffect(() => {
-    const load = async () => {
-      const { data, error } = await supabase.from("foods").select("*");
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      setFoods(data ?? []);
-    };
-
-    load();
-  }, []);
+  //Ha kétszer hívom meg ezt, pl az addFoodForm-ba akkor 2 instance 2 hívás
+  const { foods, addFood } = useGetFoods();
 
   return (
     <div className="h-full flex flex-col bg-gray-100 p-4 overflow-hidden">
@@ -43,12 +32,22 @@ export const MainPage = () => {
           </Tabs.ListContainer>
         </Tabs>
 
+        <div>
+          <SearchField name="search">
+            <Label>Search</Label>
+            <SearchField.Group>
+              <SearchField.SearchIcon />
+              <SearchField.Input placeholder="Search..." />
+              <SearchField.ClearButton />
+            </SearchField.Group>
+          </SearchField>
+        </div>
         {/* TABLE AREA */}
         <div className="flex-1 overflow-hidden">
           <Table className="h-full w-full">
-            <Table.ScrollContainer className="h-full overflow-auto">
-              <Table.Content>
-                <Table.Header className="h-full w-full sticky top-0 bg-gray-200">
+            <Table.ScrollContainer>
+              <Table.Content aria-label="Food table">
+                <Table.Header>
                   <Table.Column isRowHeader>Name</Table.Column>
                   <Table.Column>Protein</Table.Column>
                   <Table.Column>Calories</Table.Column>
@@ -69,6 +68,7 @@ export const MainPage = () => {
             </Table.ScrollContainer>
           </Table>
         </div>
+        <AddFoodForm addFood={addFood} />
       </div>
     </div>
   );
