@@ -16,7 +16,7 @@ export default function App() {
           {/* Logged in as {session.user.email} */}
           Unknown
         </Typography>
-        <Button onClick={() => supabase.auth.signOut()}>Logout</Button>
+        <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
       </div>
 
       {/* Main content */}

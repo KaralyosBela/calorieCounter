@@ -1,5 +1,5 @@
 import { Plus } from "@gravity-ui/icons";
-import { Typography, Input, Button } from "@heroui/react";
+import { Typography, Input, Button, Surface } from "@heroui/react";
 import { useState } from "react";
 // import { Plus } from "@gravity-ui/icons";
 // import { motion } from "framer-motion";
@@ -18,9 +18,9 @@ export const AddFoodForm = ({ addFood }: { addFood: any }) => {
   };
 
   return (
-    <div>
+    <Surface className="gap-3 rounded-3xl p-6" variant="default">
       <Typography>Add new food</Typography>
-      <div className="flex gap-2 flex-col sm:flex-row">
+      <div className="flex gap-2 flex-col ">
         <Input
           className="w-full"
           type="text"
@@ -64,6 +64,6 @@ export const AddFoodForm = ({ addFood }: { addFood: any }) => {
           Add food
         </Button>
       </div>
-    </div>
+    </Surface>
   );
 };
