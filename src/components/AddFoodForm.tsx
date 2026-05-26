@@ -1,8 +1,10 @@
 import { Plus } from "@gravity-ui/icons";
 import { Typography, Input, Button, Surface, toast } from "@heroui/react";
 import { useState } from "react";
+import { useFoods } from "../hooks/useFoods";
 
-export const AddFoodForm = ({ addFood }: { addFood: any }) => {
+export const AddFoodForm = () => {
+  const { addFood } = useFoods();
   const [name, setName] = useState("");
   const [protein, setProtein] = useState("");
   const [calories, setCalories] = useState("");
@@ -10,8 +12,8 @@ export const AddFoodForm = ({ addFood }: { addFood: any }) => {
   const handleAdd = () => {
     addFood({
       name,
-      protein,
-      calories,
+      protein: Number(protein),
+      calories: Number(calories),
     });
     toast.success("successfully added!");
   };

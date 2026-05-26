@@ -1,6 +1,9 @@
 import { Table } from "@heroui/react";
+import { useFoods } from "../hooks/useFoods";
 
-export const FoodTable = ({ foods, searchValue }: any) => {
+export const FoodTable = ({ searchValue }: any) => {
+  const { foods } = useFoods();
+
   const filteredFoods = foods.filter((food: any) => {
     const value = searchValue.trim().toLowerCase();
 
@@ -12,6 +15,7 @@ export const FoodTable = ({ foods, searchValue }: any) => {
       String(food.calories).includes(value)
     );
   });
+
   return (
     <Table className="overflow-hidden">
       <Table.ScrollContainer>
