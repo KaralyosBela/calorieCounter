@@ -1,6 +1,13 @@
 import { useState } from "react";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { supabase } from "../database/supabase";
+import {
+  Button,
+  Card,
+  ErrorMessage,
+  Input,
+  Spinner,
+  Typography,
+} from "@heroui/react";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
@@ -14,8 +21,6 @@ export default function Auth() {
     setError(null);
 
     if (mode === "signup") {
-      console.log("email:", email);
-      console.log("email length:", email.length);
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -35,63 +40,58 @@ export default function Auth() {
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#f5f5f5",
-      }}
-    >
-      <Paper sx={{ p: 4, width: 350 }}>
-        <Typography variant="h5">
-          {mode === "login" ? "Login" : "Sign up"}
-        </Typography>
-
-        <TextField
-          fullWidth
-          label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          margin="normal"
-        />
-
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          margin="normal"
-        />
-
-        {error && (
-          <Typography color="error" variant="body2">
-            {error}
+    <div className="flex h-screen items-center justify-center bg-gray-100">
+      <Card className="w-full max-w-md p-6">
+        <Card.Header>
+          <Typography weight="bold">
+            {mode === "login" ? "Login" : "Sign up"}
           </Typography>
-        )}
+          <Typography className="text-gray-500">
+            {mode === "login"
+              ? "Enter your credentials to log in"
+              : "Create a new account"}
+          </Typography>
+        </Card.Header>
 
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={handleAuth}
-          disabled={loading}
-        >
-          {mode === "login" ? "Login" : "Create account"}
-        </Button>
+        <Card.Content className="flex flex-col gap-4 mb-4">
+          <Input
+            type="email"
+            placeholder="email@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <Button
-          fullWidth
-          sx={{ mt: 1 }}
-          onClick={() => setMode(mode === "login" ? "signup" : "login")}
-        >
-          {mode === "login"
-            ? "No account? Sign up"
-            : "Already have account? Login"}
-        </Button>
-      </Paper>
-    </Box>
+          <Input
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Card.Content>
+
+        <Card.Footer className="flex flex-col gap-3">
+          <Button isPending={loading} className="w-full" onPress={handleAuth}>
+            {({ isPending }) => (
+              <>
+                {isPending ? <Spinner color="current" size="sm" /> : null}
+                {mode === "login" ? "Login" : "Create account"}
+              </>
+            )}
+          </Button>
+          <Button
+            variant="primary"
+            className="w-full"
+            onPress={() => setMode(mode === "login" ? "signup" : "login")}
+          >
+            {mode === "login"
+              ? "No account? Sign up"
+              : "Already have an account? Login"}
+          </Button>
+          {error && (
+            <ErrorMessage className="text-danger">{error}</ErrorMessage>
+          )}
+        </Card.Footer>
+      </Card>
+    </div>
   );
 }
