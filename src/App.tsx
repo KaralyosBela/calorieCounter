@@ -3,6 +3,7 @@ import { useAuth } from "./hooks/useAuth";
 import { supabase } from "./database/supabase";
 import { MainPage } from "./components/MainPage";
 import { Button, Typography } from "@heroui/react";
+import { Dashboard } from "./components/Dashboard";
 
 export default function App() {
   const session = useAuth();
@@ -10,6 +11,7 @@ export default function App() {
   // if (!session) return <Auth />;
 
   return (
+    // <Dashboard />
     <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
       <div className="flex items-center justify-between p-2 border-b bg-white shrink-0">
         <Typography className="text-md font-semibold">
