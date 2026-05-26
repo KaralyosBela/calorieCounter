@@ -1,5 +1,7 @@
 import { Table } from "@heroui/react";
 import { useFoods } from "../hooks/useFoods";
+import dayjs from "dayjs";
+// import { motion } from "framer-motion";
 
 export const FoodTable = ({ searchValue }: any) => {
   const { foods } = useFoods();
@@ -17,6 +19,7 @@ export const FoodTable = ({ searchValue }: any) => {
   });
 
   return (
+    // <motion.div layout transition={{ duration: 1, ease: "circOut" }}>
     <Table className="overflow-hidden">
       <Table.ScrollContainer>
         <Table.Content aria-label="Food table">
@@ -33,12 +36,15 @@ export const FoodTable = ({ searchValue }: any) => {
                 <Table.Cell>{food.name}</Table.Cell>
                 <Table.Cell>{food.protein}</Table.Cell>
                 <Table.Cell>{food.calories}</Table.Cell>
-                <Table.Cell>{food.created_at}</Table.Cell>
+                <Table.Cell>
+                  {dayjs(food.createdAt).format("MMM D, HH:mm")}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
         </Table.Content>
       </Table.ScrollContainer>
     </Table>
+    // </motion.div>
   );
 };

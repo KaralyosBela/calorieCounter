@@ -6,6 +6,7 @@ import { SurfaceStuff } from "./Accordion";
 import { FoodTabs } from "./Tabs";
 import { BarChart } from "./charts/BarChart";
 import { useFoods } from "../hooks/useFoods";
+import { Avg } from "./Avg";
 
 export const MainPage = () => {
   const { foods } = useFoods();
@@ -19,6 +20,7 @@ export const MainPage = () => {
         <div className="w-60 flex gap-4 flex-col items-end">
           {/* w-60 helyett 1/5 2/5 volt */}
           <FoodTabs />
+          {/* <Avg /> */}
           {/* <BarChart
             data={[
               { label: "Mon", value: 2200 },

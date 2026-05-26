@@ -1,27 +1,20 @@
 import Auth from "./components/Auth";
 import { useAuth } from "./hooks/useAuth";
-import { supabase } from "./database/supabase";
 import { MainPage } from "./components/MainPage";
-import { Button, Typography } from "@heroui/react";
 import { Dashboard } from "./components/Dashboard";
+import { Header } from "./components/Header";
 
 export default function App() {
   const session = useAuth();
 
-  // if (!session) return <Auth />;
+  // if (!session) return <Auth />;s
 
   return (
     // <Dashboard />
-    <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
-      <div className="flex items-center justify-between p-2 border-b bg-white shrink-0">
-        <Typography className="text-md font-semibold">
-          {/* Logged in as {session.user.email} */}
-          Unknown
-        </Typography>
-        <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
-      </div>
-
-      {/* Main content */}
+    // <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden">
+      <Header />
+      {/* flex kitölti a maradék helyet, h-full okés ha a parent fullos, flex-1 biztosabb*/}
       <div className="flex-1 overflow-hidden">
         <MainPage />
       </div>

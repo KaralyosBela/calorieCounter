@@ -1,6 +1,16 @@
 // hooks/useFoods.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../database/supabase";
+import dayjs from "dayjs";
+
+const mapper = (foods: any[]) =>
+  foods.map((food) => ({
+    id: food.id,
+    name: food.name,
+    protein: food.protein,
+    calories: food.calories,
+    createdAt: food.created_at,
+  }));
 
 export const useFoods = () => {
   const queryClient = useQueryClient();
@@ -11,10 +21,15 @@ export const useFoods = () => {
       const { data, error } = await supabase
         .from("foods")
         .select("*")
-        .order("created_at", { ascending: false });
+        .order("created_at");
 
       if (error) throw error;
-      return data ?? [];
+
+      const x = mapper(data);
+
+      console.log(x);
+
+      return x ?? [];
     },
   });
 
