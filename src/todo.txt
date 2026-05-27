@@ -1,0 +1,5 @@
+egy tábla, ahol a kajákat felveszem
+egy oldal, ahol a kajákat nap,hét,hónap szerint kimutatom
+dayjs
+
+protein ugyanígy
