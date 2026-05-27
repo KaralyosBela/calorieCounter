@@ -1,4 +1,4 @@
-import { Tabs } from "@heroui/react";
+import { Surface, Tabs } from "@heroui/react";
 
 export const FoodTabs = () => {
   return (
