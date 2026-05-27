@@ -27,8 +27,6 @@ export const useFoods = () => {
 
       const x = mapper(data);
 
-      console.log(x);
-
       return x ?? [];
     },
   });
@@ -47,11 +45,22 @@ export const useFoods = () => {
     },
   });
 
+  const deleteFood = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("foods").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["foods"] });
+    },
+  });
+
   return {
     foods: foodsQuery.data ?? [],
     isLoading: foodsQuery.isLoading,
     error: foodsQuery.error,
     addFood: addFood.mutateAsync,
     isAdding: addFood.isPending,
+    deleteFood: deleteFood.mutateAsync,
   };
 };

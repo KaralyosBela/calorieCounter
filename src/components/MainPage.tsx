@@ -1,12 +1,12 @@
 import { AddFoodForm } from "./AddFoodForm";
 import { useState } from "react";
 import { Search } from "./Search";
-import { FoodTable } from "./FoodTable";
 import { SurfaceStuff } from "./Accordion";
 import { FoodTabs } from "./Tabs";
 import { BarChart } from "./charts/BarChart";
 import { useFoods } from "../hooks/useFoods";
 import { Avg } from "./Avg";
+import { FoodTable } from "./table/FoodTable";
 
 export const MainPage = () => {
   const { foods } = useFoods();
