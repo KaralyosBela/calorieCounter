@@ -11,7 +11,7 @@ export const Search = ({ searchValue, setSearchValue }: any) => {
   };
 
   return (
-    <SearchField name="search">
+    <SearchField name="search" aria-label="search">
       <SearchField.Group>
         <SearchField.SearchIcon />
         <SearchField.Input

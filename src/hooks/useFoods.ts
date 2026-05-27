@@ -9,7 +9,10 @@ const mapper = (foods: any[]) =>
     name: food.name,
     protein: food.protein,
     calories: food.calories,
-    createdAt: food.created_at,
+    createdAt: dayjs
+      .utc(food.created_at)
+      .tz("Europe/Budapest")
+      .format("YYYY-MM-DD HH:mm"),
   }));
 
 export const useFoods = () => {
@@ -21,7 +24,9 @@ export const useFoods = () => {
       const { data, error } = await supabase
         .from("foods")
         .select("*")
-        .order("created_at");
+        .order("created_at", {
+          ascending: false,
+        });
 
       if (error) throw error;
 
@@ -48,10 +53,32 @@ export const useFoods = () => {
   const deleteFood = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("foods").delete().eq("id", id);
+
       if (error) throw error;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["foods"] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["foods"] });
+    },
+  });
+
+  const updateFood = useMutation({
+    mutationFn: async ({
+      id,
+      food,
+    }: {
+      id: string;
+      food: {
+        name: string;
+        protein: number;
+        calories: number;
+      };
+    }) => {
+      const { error } = await supabase.from("foods").update(food).eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["foods"] });
     },
   });
 
@@ -62,5 +89,6 @@ export const useFoods = () => {
     addFood: addFood.mutateAsync,
     isAdding: addFood.isPending,
     deleteFood: deleteFood.mutateAsync,
+    updateFood: updateFood.mutateAsync,
   };
 };

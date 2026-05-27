@@ -22,8 +22,8 @@ export const AddFoodForm = () => {
   const [foodType, setFoodType] = useState<Iterable<Key>>(new Set([]));
   const [servingType, setServingType] = useState<Iterable<Key>>(new Set([]));
 
-  const handleAdd = () => {
-    addFood({
+  const handleAdd = async () => {
+    await addFood({
       name,
       protein: Number(protein),
       calories: Number(calories),

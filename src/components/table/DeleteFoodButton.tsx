@@ -2,11 +2,12 @@ import { TrashBin } from "@gravity-ui/icons";
 import { Popover, Button, toast } from "@heroui/react";
 import { useFoods } from "../../hooks/useFoods";
 
-export const DeleteFoodButton = () => {
+export const DeleteFoodButton = ({ food }: any) => {
   const { deleteFood } = useFoods();
 
-  const onDeletePress = (id: any) => {
-    deleteFood(id);
+  const onDeletePress = async () => {
+    console.log(food.id);
+    await deleteFood(food.id);
     toast.success("successfully deleted!");
   };
 
@@ -18,7 +19,6 @@ export const DeleteFoodButton = () => {
           size="sm"
           variant="danger-soft"
           className="hover:rotate-25 hover:scale-110 transition-transform duration-300"
-          onPress={() => console.log()}
         >
           <TrashBin />
         </Button>

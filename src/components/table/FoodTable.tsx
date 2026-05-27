@@ -1,9 +1,8 @@
-import { Button, Popover, Table } from "@heroui/react";
+import { Table } from "@heroui/react";
 import dayjs from "dayjs";
-import { Pencil } from "@gravity-ui/icons";
-import { TrashBin } from "@gravity-ui/icons";
 import { EditFoodForm } from "./EditFoodForm";
 import { useFoods } from "../../hooks/useFoods";
+import { DeleteFoodButton } from "./DeleteFoodButton";
 
 export const FoodTable = ({ searchValue }: any) => {
   const { foods } = useFoods();
@@ -39,57 +38,11 @@ export const FoodTable = ({ searchValue }: any) => {
                   <Table.Cell>{food.name}</Table.Cell>
                   <Table.Cell>{food.protein}</Table.Cell>
                   <Table.Cell>{food.calories}</Table.Cell>
-                  <Table.Cell>
-                    {dayjs(food.createdAt).format("MMM D, HH:mm")}
-                  </Table.Cell>
+                  <Table.Cell>{food.createdAt}</Table.Cell>
                   <Table.Cell>
                     <div className="flex items-center justify-end gap-2">
-                      <Popover>
-                        <Popover.Trigger>
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            variant="tertiary"
-                            className="hover:rotate-25 hover:scale-110 transition-transform duration-300"
-                            onPress={() => console.log(food.id)}
-                          >
-                            <Pencil />
-                          </Button>
-                        </Popover.Trigger>
-
-                        <Popover.Content placement="left">
-                          <Popover.Arrow />
-                          <Popover.Dialog>
-                            <Popover.Heading />
-                            <EditFoodForm food={food} />
-                          </Popover.Dialog>
-                        </Popover.Content>
-                      </Popover>
-                      <Popover>
-                        <Popover.Trigger>
-                          <Button
-                            isIconOnly
-                            size="sm"
-                            variant="danger-soft"
-                            className="hover:rotate-25 hover:scale-110 transition-transform duration-300"
-                            onPress={() => console.log(food.id)}
-                          >
-                            <TrashBin />
-                          </Button>
-                        </Popover.Trigger>
-                        <Popover.Content placement="left">
-                          <Popover.Arrow />
-                          <Popover.Dialog className="p-1">
-                            <Popover.Heading />
-                            <Button
-                              variant="danger"
-                              className="hover:scale-105 duration-300 ease-in-out transition-all "
-                            >
-                              Confirm
-                            </Button>
-                          </Popover.Dialog>
-                        </Popover.Content>
-                      </Popover>
+                      <EditFoodForm food={food} />
+                      <DeleteFoodButton food={food} />
                     </div>
                   </Table.Cell>
                 </Table.Row>
