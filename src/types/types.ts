@@ -14,4 +14,4 @@ export type Food = {
   createdAt: string | null;
 };
 
-export type AddFood = Partial<Omit<Food, "id" | "createdAt">>;
+export type AddFood = Partial<Omit<Food, "id">>;

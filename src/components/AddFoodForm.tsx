@@ -32,7 +32,7 @@ export const AddFoodForm = () => {
       protein: Number(protein),
       calories: Number(calories),
     });
-    toast.success("successfully added!");
+    toast.success("Successfully added!");
   };
 
   return (
@@ -101,41 +101,41 @@ export const AddFoodForm = () => {
             </Tag>
           </TagGroup.List>
         </TagGroup>
-        {servingType.has("multiple") && (
+        {Array.from(servingType).includes("multiple") && (
           <div className="flex flex-row justify-content items-center w-full gap-2">
-            <Select placeholder="Portion" className="w-full flex-1">
+            <Select
+              placeholder="Portion"
+              className="w-full flex-1"
+              aria-label="portion-select"
+            >
               <Select.Trigger>
                 <Select.Value />
                 <Select.Indicator />
               </Select.Trigger>
               <Select.Popover>
                 <ListBox>
-                  <ListBox.Item id="florida" textValue="Florida">
-                    1 day
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                  <ListBox.Item id="delaware" textValue="Delaware">
+                  <ListBox.Item id="2" textValue="Delaware">
                     2 day
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
-                  <ListBox.Item id="california" textValue="California">
+                  <ListBox.Item id="3" textValue="California">
                     3 day
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
-                  <ListBox.Item id="texas" textValue="Texas">
+                  <ListBox.Item id="4" textValue="Texas">
                     4 day
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
-                  <ListBox.Item id="new-york" textValue="New York">
+                  <ListBox.Item id="5" textValue="New York">
                     5 day
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
-                  <ListBox.Item id="washington" textValue="Washington">
+                  <ListBox.Item id="6" textValue="Washington">
                     6 day
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
-                  <ListBox.Item id="washington" textValue="Washington">
-                    a week
+                  <ListBox.Item id="7" textValue="Washington">
+                    1 week
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
                 </ListBox>

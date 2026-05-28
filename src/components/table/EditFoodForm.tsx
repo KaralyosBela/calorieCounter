@@ -1,17 +1,41 @@
 import { useState } from "react";
-import { Button, DateField, Input, Popover, TimeField } from "@heroui/react";
+import {
+  Button,
+  DateField,
+  Input,
+  Popover,
+  TimeField,
+  type TimeValue,
+} from "@heroui/react";
 import { Clock, FloppyDisk, Pencil, Calendar } from "@gravity-ui/icons";
 import { useFoods } from "../../hooks/useFoods";
 import type { Food } from "../../types/types";
+import { parseDate, parseTime, type DateValue } from "@internationalized/date";
+
+const parseCreatedAt = (createdAt: string) => {
+  const [rawDate = "", rawTime = ""] = createdAt?.split(" ") ?? [];
+
+  return {
+    date: rawDate ? parseDate(rawDate) : null,
+    time: rawTime ? parseTime(rawTime) : null,
+  };
+};
 
 export const EditFoodForm = ({ food }: { food: Food }) => {
   const { updateFood } = useFoods();
-
   const [isOpen, setIsOpen] = useState(false);
+  const { date, time } = parseCreatedAt(food.createdAt ?? "");
 
   const [name, setName] = useState(food.name);
   const [protein, setProtein] = useState(String(food.protein));
   const [calories, setCalories] = useState(String(food.calories));
+  const [selectedDate, setSelectedDate] = useState<DateValue | null>(date);
+  const [selectedTime, setSelectedTime] = useState<TimeValue | null>(time);
+
+  const createdAt =
+    selectedDate && selectedTime
+      ? `${setSelectedDate.toString()} ${selectedTime.toString()}`
+      : food.createdAt;
 
   const handleSave = async () => {
     await updateFood({
@@ -20,6 +44,7 @@ export const EditFoodForm = ({ food }: { food: Food }) => {
         name,
         protein: Number(protein),
         calories: Number(calories),
+        createdAt,
       },
     });
 
@@ -52,7 +77,12 @@ export const EditFoodForm = ({ food }: { food: Food }) => {
               value={calories}
               onChange={(e) => setCalories(e.target.value)}
             />
-            <DateField name="date">
+            <DateField
+              name="date"
+              aria-label="date"
+              value={selectedDate}
+              onChange={setSelectedDate}
+            >
               <DateField.Group>
                 <DateField.Prefix>
                   <Calendar className="size-4 text-muted" />
@@ -62,7 +92,12 @@ export const EditFoodForm = ({ food }: { food: Food }) => {
                 </DateField.Input>
               </DateField.Group>
             </DateField>
-            <TimeField name="time">
+            <TimeField
+              name="time"
+              aria-label="time"
+              value={selectedTime}
+              onChange={setSelectedTime}
+            >
               <TimeField.Group>
                 <TimeField.Prefix>
                   <Clock className="size-4 text-muted" />

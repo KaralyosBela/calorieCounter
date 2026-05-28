@@ -9,7 +9,7 @@ export const DeleteFoodButton = ({ food }: { food: Food }) => {
   const onDeletePress = async () => {
     console.log(food.id);
     await deleteFood(food.id);
-    toast.success("successfully deleted!");
+    toast.success("Successfully deleted!");
   };
 
   return (

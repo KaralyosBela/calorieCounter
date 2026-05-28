@@ -61,7 +61,15 @@ export const useFoods = () => {
 
   const updateFood = useMutation({
     mutationFn: async ({ id, food }: { id: string; food: AddFood }) => {
-      const { error } = await supabase.from("foods").update(food).eq("id", id);
+      const { error } = await supabase
+        .from("foods")
+        .update({
+          name: food.name,
+          protein: food.protein,
+          calories: food.calories,
+          created_at: food.createdAt,
+        })
+        .eq("id", id);
 
       if (error) throw error;
     },

@@ -2,12 +2,9 @@ import { AddFoodForm } from "./AddFoodForm";
 import { useState } from "react";
 import { Search } from "./Search";
 import { FoodTabs } from "./Tabs";
-import { useFoods } from "../hooks/useFoods";
 import { FoodTable } from "./table/FoodTable";
 
 export const MainPage = () => {
-  const { foods } = useFoods();
-
   const [searchValue, setSearchValue] = useState("");
 
   return (

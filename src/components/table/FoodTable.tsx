@@ -30,7 +30,6 @@ export const FoodTable = ({ searchValue }: { searchValue: string }) => {
               <Table.Column isRowHeader>Date</Table.Column>
               <Table.Column className="text-end">Actions</Table.Column>
             </Table.Header>
-
             <Table.Body>
               {filteredFoods.map((food) => (
                 <Table.Row key={food.id}>
