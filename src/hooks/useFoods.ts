@@ -1,49 +1,91 @@
-// hooks/useFoods.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../database/supabase";
 import dayjs from "dayjs";
+import type { AddFood, Food, FoodFromDb } from "../types/types";
 
-const mapper = (foods: any[]) =>
+const mapper = (foods: FoodFromDb[]): Food[] =>
   foods.map((food) => ({
     id: food.id,
     name: food.name,
     protein: food.protein,
     calories: food.calories,
-    createdAt: food.created_at,
+    createdAt: dayjs(food.created_at).format("YYYY-MM-DD HH:mm"),
   }));
 
 export const useFoods = () => {
   const queryClient = useQueryClient();
 
-  const foodsQuery = useQuery({
+  const foodsQuery = useQuery<Food[]>({
     queryKey: ["foods"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("foods")
         .select("*")
-        .order("created_at");
+        .order("created_at", {
+          ascending: false,
+        });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
-      const x = mapper(data);
-
-      console.log(x);
-
-      return x ?? [];
+      return mapper(data ?? []);
     },
   });
 
   const addFood = useMutation({
-    mutationFn: async (food: {
-      name: string;
-      protein: number;
-      calories: number;
+    mutationFn: async ({
+      food,
+      servingSize,
+    }: {
+      food: AddFood;
+      servingSize: number;
     }) => {
-      const { error } = await supabase.from("foods").insert(food);
+      const rows = Array.from({ length: servingSize }, (_, index) => ({
+        name: food.name,
+        protein: food.protein / servingSize,
+        calories: food.calories / servingSize,
+        created_at: dayjs().add(index, "day").format("YYYY-MM-DD HH:mm"),
+      }));
+
+      const { error } = await supabase.from("foods").insert(rows);
+
       if (error) throw error;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["foods"] });
+    },
+  });
+
+  const deleteFood = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("foods").delete().eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["foods"] });
+    },
+  });
+
+  const updateFood = useMutation({
+    mutationFn: async ({ id, food }: { id: string; food: AddFood }) => {
+      console.log(food);
+      const { error } = await supabase
+        .from("foods")
+        .update({
+          name: food.name,
+          protein: food.protein,
+          calories: food.calories,
+          created_at: food.createdAt,
+        })
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["foods"] });
     },
   });
 
@@ -53,5 +95,7 @@ export const useFoods = () => {
     error: foodsQuery.error,
     addFood: addFood.mutateAsync,
     isAdding: addFood.isPending,
+    deleteFood: deleteFood.mutateAsync,
+    updateFood: updateFood.mutateAsync,
   };
 };

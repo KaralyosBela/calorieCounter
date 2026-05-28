@@ -1,4 +1,4 @@
-import { Typography, Button } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { supabase } from "../database/supabase";
 import { ArrowRightFromSquare } from "@gravity-ui/icons";
 
@@ -11,25 +11,10 @@ export const Header = () => {
   };
 
   return (
-    <div className="flex h-12 p-4 items-center justify-between bg-white ">
-      <Typography type="h5">
-        {/* Logged in as {session.user.email} */}
-        Count your{" "}
-        <span className="inline-block text-yellow-500 hover:text-red-500 hover:rotate-360 transition-all duration-300 hover:cursor-pointer">
-          calories
-        </span>{" "}
-        and protein intake easily!
-      </Typography>
-
+    <div className="flex h-12 p-4 items-center justify-end bg-white ">
       <div className="flex flex-row gap-4 justify-center items-center">
         <a href="#" className={linkClass}>
-          About
-        </a>
-        <a href="#" className={linkClass}>
-          Something
-        </a>
-        <a href="#" className={linkClass}>
-          Settings
+          About this project
         </a>
         <Button
           onPress={onLogoutPress}
