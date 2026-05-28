@@ -1,4 +1,3 @@
-// hooks/useFoods.ts
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../database/supabase";
 import dayjs from "dayjs";
@@ -10,10 +9,7 @@ const mapper = (foods: FoodFromDb[]): Food[] =>
     name: food.name,
     protein: food.protein,
     calories: food.calories,
-    createdAt: dayjs
-      .utc(food.created_at)
-      .tz("Europe/Budapest")
-      .format("YYYY-MM-DD HH:mm"),
+    createdAt: dayjs(food.created_at).format("YYYY-MM-DD HH:mm"),
   }));
 
 export const useFoods = () => {
@@ -38,11 +34,25 @@ export const useFoods = () => {
   });
 
   const addFood = useMutation({
-    mutationFn: async (food: AddFood) => {
-      console.log(food);
-      const { error } = await supabase.from("foods").insert(food);
+    mutationFn: async ({
+      food,
+      servingSize,
+    }: {
+      food: AddFood;
+      servingSize: number;
+    }) => {
+      const rows = Array.from({ length: servingSize }, (_, index) => ({
+        name: food.name,
+        protein: food.protein / servingSize,
+        calories: food.calories / servingSize,
+        created_at: dayjs().add(index, "day").format("YYYY-MM-DD HH:mm"),
+      }));
+
+      const { error } = await supabase.from("foods").insert(rows);
+
       if (error) throw error;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["foods"] });
     },
@@ -61,6 +71,7 @@ export const useFoods = () => {
 
   const updateFood = useMutation({
     mutationFn: async ({ id, food }: { id: string; food: AddFood }) => {
+      console.log(food);
       const { error } = await supabase
         .from("foods")
         .update({

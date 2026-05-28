@@ -25,12 +25,20 @@ export const AddFoodForm = () => {
   const [calories, setCalories] = useState("");
   const [foodType, setFoodType] = useState<Iterable<Key>>(new Set([]));
   const [servingType, setServingType] = useState<Iterable<Key>>(new Set([]));
+  const [day, setDay] = useState<Key | null>(1);
 
   const handleAdd = async () => {
+    const servingSize = Array.from(servingType).includes("multiple")
+      ? Number(day)
+      : 1;
+
     await addFood({
-      name,
-      protein: Number(protein),
-      calories: Number(calories),
+      food: {
+        name,
+        protein: Number(protein),
+        calories: Number(calories),
+      },
+      servingSize,
     });
     toast.success("Successfully added!");
   };
@@ -107,6 +115,8 @@ export const AddFoodForm = () => {
               placeholder="Portion"
               className="w-full flex-1"
               aria-label="portion-select"
+              value={day}
+              onChange={(value) => setDay(value)}
             >
               <Select.Trigger>
                 <Select.Value />
