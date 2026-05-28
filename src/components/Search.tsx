@@ -1,6 +1,12 @@
 import { SearchField } from "@heroui/react";
 
-export const Search = ({ searchValue, setSearchValue }: any) => {
+export const Search = ({
+  searchValue,
+  setSearchValue,
+}: {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}) => {
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearchValue(value);

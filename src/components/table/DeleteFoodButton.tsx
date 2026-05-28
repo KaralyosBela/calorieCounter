@@ -1,8 +1,9 @@
 import { TrashBin } from "@gravity-ui/icons";
 import { Popover, Button, toast } from "@heroui/react";
 import { useFoods } from "../../hooks/useFoods";
+import type { Food } from "../../types/types";
 
-export const DeleteFoodButton = ({ food }: any) => {
+export const DeleteFoodButton = ({ food }: { food: Food }) => {
   const { deleteFood } = useFoods();
 
   const onDeletePress = async () => {

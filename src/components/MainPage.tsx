@@ -1,11 +1,8 @@
 import { AddFoodForm } from "./AddFoodForm";
 import { useState } from "react";
 import { Search } from "./Search";
-import { SurfaceStuff } from "./Accordion";
 import { FoodTabs } from "./Tabs";
-import { BarChart } from "./charts/BarChart";
 import { useFoods } from "../hooks/useFoods";
-import { Avg } from "./Avg";
 import { FoodTable } from "./table/FoodTable";
 
 export const MainPage = () => {
@@ -36,12 +33,11 @@ export const MainPage = () => {
         <div className=" w-full flex flex-col gap-4">
           {/* ha nincs width specifikalva, akkor content a default flexnek */}
           <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-          <FoodTable foods={foods} searchValue={searchValue} />
+          <FoodTable searchValue={searchValue} />
         </div>
         <div className="w-2/5 flex flex-col gap-4">
           {/* ha nincs width specifikalva, akkor content a default flexnek, w-full felülírja */}
           <AddFoodForm />
-          <SurfaceStuff />
         </div>
       </div>
     </div>

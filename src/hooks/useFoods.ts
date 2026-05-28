@@ -2,8 +2,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../database/supabase";
 import dayjs from "dayjs";
+import type { AddFood, Food, FoodFromDb } from "../types/types";
 
-const mapper = (foods: any[]) =>
+const mapper = (foods: FoodFromDb[]): Food[] =>
   foods.map((food) => ({
     id: food.id,
     name: food.name,
@@ -18,7 +19,7 @@ const mapper = (foods: any[]) =>
 export const useFoods = () => {
   const queryClient = useQueryClient();
 
-  const foodsQuery = useQuery({
+  const foodsQuery = useQuery<Food[]>({
     queryKey: ["foods"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -28,20 +29,17 @@ export const useFoods = () => {
           ascending: false,
         });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
-      const x = mapper(data);
-
-      return x ?? [];
+      return mapper(data ?? []);
     },
   });
 
   const addFood = useMutation({
-    mutationFn: async (food: {
-      name: string;
-      protein: number;
-      calories: number;
-    }) => {
+    mutationFn: async (food: AddFood) => {
+      console.log(food);
       const { error } = await supabase.from("foods").insert(food);
       if (error) throw error;
     },
@@ -62,17 +60,7 @@ export const useFoods = () => {
   });
 
   const updateFood = useMutation({
-    mutationFn: async ({
-      id,
-      food,
-    }: {
-      id: string;
-      food: {
-        name: string;
-        protein: number;
-        calories: number;
-      };
-    }) => {
+    mutationFn: async ({ id, food }: { id: string; food: AddFood }) => {
       const { error } = await supabase.from("foods").update(food).eq("id", id);
 
       if (error) throw error;

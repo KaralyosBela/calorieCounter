@@ -1,13 +1,12 @@
 import { Table } from "@heroui/react";
-import dayjs from "dayjs";
 import { EditFoodForm } from "./EditFoodForm";
 import { useFoods } from "../../hooks/useFoods";
 import { DeleteFoodButton } from "./DeleteFoodButton";
 
-export const FoodTable = ({ searchValue }: any) => {
+export const FoodTable = ({ searchValue }: { searchValue: string }) => {
   const { foods } = useFoods();
 
-  const filteredFoods = foods.filter((food: any) => {
+  const filteredFoods = foods.filter((food) => {
     const value = searchValue.trim().toLowerCase();
 
     if (!value) return true;
@@ -33,7 +32,7 @@ export const FoodTable = ({ searchValue }: any) => {
             </Table.Header>
 
             <Table.Body>
-              {filteredFoods.map((food: any) => (
+              {filteredFoods.map((food) => (
                 <Table.Row key={food.id}>
                   <Table.Cell>{food.name}</Table.Cell>
                   <Table.Cell>{food.protein}</Table.Cell>

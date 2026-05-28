@@ -8,9 +8,13 @@ import {
   Tag,
   TagGroup,
   type Key,
+  ListBox,
+  Select,
+  Tooltip,
 } from "@heroui/react";
 import { useState } from "react";
 import { useFoods } from "../hooks/useFoods";
+import { CircleInfo } from "@gravity-ui/icons";
 
 const badgeHoverStyle = "hover:scale-110 transition-transform duration-300";
 
@@ -89,10 +93,68 @@ export const AddFoodForm = () => {
           onSelectionChange={(keys) => setServingType(keys)}
         >
           <TagGroup.List>
-            <Tag className={badgeHoverStyle}>Single serving</Tag>
-            <Tag className={badgeHoverStyle}>Full serving</Tag>
+            <Tag id="single" className={badgeHoverStyle}>
+              Single serving
+            </Tag>
+            <Tag id="multiple" className={badgeHoverStyle}>
+              Multiple serving
+            </Tag>
           </TagGroup.List>
         </TagGroup>
+        {servingType.has("multiple") && (
+          <div className="flex flex-row justify-content items-center w-full gap-2">
+            <Select placeholder="Portion" className="w-full flex-1">
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  <ListBox.Item id="florida" textValue="Florida">
+                    1 day
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="delaware" textValue="Delaware">
+                    2 day
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="california" textValue="California">
+                    3 day
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="texas" textValue="Texas">
+                    4 day
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="new-york" textValue="New York">
+                    5 day
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="washington" textValue="Washington">
+                    6 day
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="washington" textValue="Washington">
+                    a week
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                </ListBox>
+              </Select.Popover>
+            </Select>
+            <Tooltip delay={1000}>
+              <Button isIconOnly variant="tertiary" size="sm">
+                <CircleInfo />
+              </Button>
+              <Tooltip.Content>
+                <p>
+                  This means that this food will be inserted x times into the
+                  database, and its protein and calories wil be shared accross
+                  these days starting from today.
+                </p>
+              </Tooltip.Content>
+            </Tooltip>
+          </div>
+        )}
         <Button
           className="w-full"
           isDisabled={!name || !calories || !protein}
