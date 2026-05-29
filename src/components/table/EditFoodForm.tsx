@@ -32,8 +32,6 @@ export const EditFoodForm = ({ food }: { food: Food }) => {
   const [selectedDate, setSelectedDate] = useState<DateValue | null>(date);
   const [selectedTime, setSelectedTime] = useState<TimeValue | null>(time);
 
-  console.log(food);
-
   const createdAt =
     selectedDate && selectedTime
       ? `${selectedDate.toString()} ${selectedTime.toString()}`
