@@ -2,11 +2,34 @@ import { Table } from "@heroui/react";
 import { EditFoodForm } from "./EditFoodForm";
 import { useFoods } from "../../hooks/useFoods";
 import { DeleteFoodButton } from "./DeleteFoodButton";
+import { useAppStore } from "../../store/store";
+import dayjs from "dayjs";
 
-export const FoodTable = ({ searchValue }: { searchValue: string }) => {
+export const FoodTable = () => {
   const { foods } = useFoods();
+  const searchValue = useAppStore((state) => state.searchValue);
+  const selectedFilter = useAppStore((state) => state.selectedFilter);
 
-  const filteredFoods = foods.filter((food) => {
+  const dateFilteredFoods = foods.filter((food) => {
+    const foodDate = dayjs(food.createdAt);
+
+    switch (selectedFilter) {
+      case "daily":
+        return foodDate.isSame(dayjs(), "day");
+
+      case "weekly":
+        return foodDate.isSame(dayjs(), "isoWeek");
+
+      case "monthly":
+        return foodDate.isSame(dayjs(), "month");
+
+      case "every":
+      default:
+        return true;
+    }
+  });
+
+  const filteredFoods = dateFilteredFoods.filter((food) => {
     const value = searchValue.trim().toLowerCase();
 
     if (!value) return true;

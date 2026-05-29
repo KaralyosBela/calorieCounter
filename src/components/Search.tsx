@@ -1,22 +1,20 @@
-import {
-  Badge,
-  Button,
-  Dropdown,
-  Label,
-  SearchField,
-  type Selection,
-} from "@heroui/react";
+import { Badge, Button, Dropdown, Label, SearchField } from "@heroui/react";
 import { Funnel } from "@gravity-ui/icons";
-import { useState } from "react";
+import { useShallow } from "zustand/react/shallow";
+import { useAppStore } from "../store/store";
+import { motion, AnimatePresence } from "framer-motion";
 
-export const Search = ({
-  searchValue,
-  setSearchValue,
-}: {
-  searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  const [selected, setSelected] = useState<Selection>(new Set(["All"]));
+export const Search = () => {
+  const { searchValue, setSearchValue, selected, setSelected, selectedFilter } =
+    useAppStore(
+      useShallow((state) => ({
+        searchValue: state.searchValue,
+        setSearchValue: state.setSearchValue,
+        selected: state.selected,
+        setSelected: state.setSelected,
+        selectedFilter: state.selectedFilter,
+      })),
+    );
 
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -50,7 +48,23 @@ export const Search = ({
           >
             <Funnel />
           </Button>
-          <Badge size="sm" color="accent" />
+          <AnimatePresence>
+            {selectedFilter !== "every" && (
+              <motion.div
+                style={{ transformOrigin: "top right" }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0 }}
+                transition={{
+                  type: "keyframes",
+                  stiffness: 500,
+                  damping: 25,
+                }}
+              >
+                <Badge size="sm" color="accent" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Badge.Anchor>
         <Dropdown.Popover placement="bottom right">
           <Dropdown.Menu
@@ -59,20 +73,20 @@ export const Search = ({
             onSelectionChange={setSelected}
           >
             <Dropdown.Section>
-              <Dropdown.Item id="All">
+              <Dropdown.Item id="every">
                 <Dropdown.ItemIndicator />
                 <Label>All</Label>
               </Dropdown.Item>
-              <Dropdown.Item id="Daily">
+              <Dropdown.Item id="daily">
                 <Dropdown.ItemIndicator />
                 <Label>Today</Label>
               </Dropdown.Item>
-              <Dropdown.Item id="Weekly">
+              <Dropdown.Item id="weekly">
                 <Dropdown.ItemIndicator />
                 <Label>This week</Label>
               </Dropdown.Item>
             </Dropdown.Section>
-            <Dropdown.Item id="Monthly">
+            <Dropdown.Item id="monthly">
               <Dropdown.ItemIndicator />
               <Label>This month</Label>
             </Dropdown.Item>

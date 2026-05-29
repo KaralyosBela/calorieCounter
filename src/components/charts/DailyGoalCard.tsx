@@ -5,7 +5,7 @@ import { Label, Meter, Surface, Typography } from "@heroui/react";
 export const DailyGoalCard = () => {
   return (
     <Surface
-      className="rounded-3xl p-4 shadow-lg flex flex-col gap-2"
+      className="rounded-3xl p-4 shadow-lg flex flex-col gap-2 w-full"
       variant="default"
     >
       <Typography type="h5">Goals for the day</Typography>
