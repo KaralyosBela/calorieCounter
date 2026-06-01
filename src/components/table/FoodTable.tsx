@@ -50,7 +50,9 @@ export const FoodTable = () => {
               <Table.Column isRowHeader>Name</Table.Column>
               <Table.Column isRowHeader>Protein</Table.Column>
               <Table.Column isRowHeader>Calories</Table.Column>
-              <Table.Column isRowHeader>Date</Table.Column>
+              <Table.Column className="hidden sm:table-cell" isRowHeader>
+                Date
+              </Table.Column>
               <Table.Column className="text-end">Actions</Table.Column>
             </Table.Header>
             <Table.Body>
@@ -59,7 +61,9 @@ export const FoodTable = () => {
                   <Table.Cell>{food.name}</Table.Cell>
                   <Table.Cell>{food.protein}</Table.Cell>
                   <Table.Cell>{food.calories}</Table.Cell>
-                  <Table.Cell>{food.createdAt}</Table.Cell>
+                  <Table.Cell className="hidden sm:table-cell">
+                    {food.createdAt}
+                  </Table.Cell>
                   <Table.Cell>
                     <div className="flex items-center justify-end gap-2">
                       <EditFoodForm food={food} />
