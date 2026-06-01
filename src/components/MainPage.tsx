@@ -1,8 +1,6 @@
 import { AddFoodForm } from "./AddFoodForm";
 import { Search } from "./Search";
 import { FoodTable } from "./table/FoodTable";
-import { DailyGoalCard } from "./charts/DailyGoalCard";
-import { DayCard } from "./DayCard";
 import { PageTransition } from "../App";
 
 export const MainPage = () => {
@@ -18,8 +16,8 @@ export const MainPage = () => {
           <div className="w-full h-full flex flex-col gap-4 md:w-2/5 sm:flex-row md:flex-col">
             {/* ha nincs width specifikalva, akkor content a default flexnek, w-full felülírja */}
             <AddFoodForm />
-            <DailyGoalCard />
-            <DayCard />
+            {/* <DailyGoalCard />
+            <DayCard /> */}
           </div>
         </div>
       </div>

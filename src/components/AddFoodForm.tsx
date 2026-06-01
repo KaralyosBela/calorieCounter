@@ -61,7 +61,7 @@ export const AddFoodForm = () => {
           className="w-full"
           type="number"
           aria-label="Protein"
-          placeholder="Protein"
+          placeholder="Protein / 100g"
           value={protein}
           onChange={(e) => setProtein(e.target.value)}
         />
@@ -69,9 +69,17 @@ export const AddFoodForm = () => {
           className="w-full"
           type="number"
           aria-label="Calories"
-          placeholder="Calories"
+          placeholder="Calories / 100g"
           value={calories}
           onChange={(e) => setCalories(e.target.value)}
+        />
+        <Input
+          className="w-full"
+          type="number"
+          aria-label="Quantity"
+          placeholder="Quantity in grams"
+          // value={calories}
+          // onChange={(e) => setCalories(e.target.value)}
         />
         <TagGroup
           selectionMode="single"

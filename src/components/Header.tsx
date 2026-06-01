@@ -16,7 +16,7 @@ export const Header = () => {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            `${linkClass} ${isActive ? "text-blue-500" : ""}`
+            `${linkClass} ${isActive ? "text-blue-500 " : ""}`
           }
           viewTransition
         >
@@ -30,6 +30,15 @@ export const Header = () => {
           viewTransition
         >
           Charts
+        </NavLink>
+        <NavLink
+          to="/goalCard"
+          className={({ isActive }) =>
+            `${linkClass} ${isActive ? "text-blue-500" : ""}`
+          }
+          viewTransition
+        >
+          Settings
         </NavLink>
         <Button
           onPress={onLogoutPress}

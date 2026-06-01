@@ -1,67 +1,121 @@
+import { Button, DateField, Label, Typography } from "@heroui/react";
+import { PageTransition } from "../App";
+import { AddFoodForm } from "./AddFoodForm";
+import { DayChart, getStatsBetween } from "./charts/DayChart";
+import { Last7DaysChart } from "./charts/Last7DaysChart";
+import { WeeklyChart } from "./charts/WeeklyChart";
+import dayjs from "dayjs";
 import { useState } from "react";
-import { Button, IconPlus } from "@heroui/react";
-import { MainPage } from "./MainPage";
+import { useFoods } from "../hooks/useFoods";
+
+// export const Dashboard = () => {
+//   const { foods } = useFoods();
+//   const [mode, setMode] = useState<"day" | "week">("day");
+//   const [selectedDate, setSelectedDate] = useState(dayjs());
+
+//   const stats = getStatsBetween(
+//     foods,
+//     selectedDate.startOf("day"),
+//     selectedDate.endOf("day"),
+//   );
+//   return (
+//     <PageTransition>
+//       <div className="h-full flex flex-col bg-gray-100 p-4 gap-4 overflow-auto">
+//         <div className="flex items-center justify-between">
+//           <Button onPress={() => setSelectedDate((d) => d.subtract(1, "day"))}>
+//             Prev
+//           </Button>
+
+//           <Typography type="h5">
+//             {selectedDate.isSame(dayjs(), "day")
+//               ? "Today"
+//               : selectedDate.format("YYYY. MM. DD.")}
+//           </Typography>
+
+//           <Button onPress={() => setSelectedDate((d) => d.add(1, "day"))}>
+//             Next
+//           </Button>
+//         </div>
+//         <div className="flex flex-col gap-4 md:flex-row md:w-full md:max-w-7xl md:mx-auto">
+//           <DayChart stats={stats} />
+//           <WeeklyChart />
+//         </div>
+//         <div className="flex flex-col gap-4 md:flex-row md:w-full md:max-w-7xl md:mx-auto">
+//           <Last7DaysChart />
+//         </div>
+//       </div>
+//     </PageTransition>
+//   );
+// };
 
 export const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { foods } = useFoods();
+
+  const [mode, setMode] = useState<"day" | "week">("day");
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+
+  const start =
+    mode === "day"
+      ? selectedDate.startOf("day")
+      : selectedDate.startOf("isoWeek");
+
+  const end =
+    mode === "day" ? selectedDate.endOf("day") : selectedDate.endOf("isoWeek");
+
+  const stats = getStatsBetween(foods, start, end);
+
+  const goPrev = () => {
+    setSelectedDate((date) =>
+      mode === "day" ? date.subtract(1, "day") : date.subtract(1, "week"),
+    );
+  };
+
+  const goNext = () => {
+    setSelectedDate((date) =>
+      mode === "day" ? date.add(1, "day") : date.add(1, "week"),
+    );
+  };
+
+  const label =
+    mode === "day"
+      ? selectedDate.isSame(dayjs(), "day")
+        ? "Today"
+        : selectedDate.format("YYYY. MM. DD.")
+      : `${selectedDate.startOf("isoWeek").format("MMM D")} - ${selectedDate
+          .endOf("isoWeek")
+          .format("MMM D")}`;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-100">
-      {/* Mobile overlay */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+    <PageTransition>
+      <div className="flex h-full flex-col gap-4 overflow-auto bg-gray-100 p-4">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-3">
+          <div className="flex justify-center gap-2">
+            <Button onPress={() => setMode("day")}>Day</Button>
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed left-0 top-0 z-50 h-full w-64 bg-white shadow-lg
-          transition-transform duration-300
-          md:static md:translate-x-0 md:shrink-0
-          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-      >
-        <div className="flex h-full flex-col p-4">
-          <nav className="flex flex-col gap-2">
-            <Button variant="primary" className="w-full">
-              Dashboard
-            </Button>
+            <Button onPress={() => setMode("week")}>Week</Button>
+          </div>
 
-            <Button variant="primary" className="w-full">
-              Foods
-            </Button>
+          <div className="flex items-center justify-between rounded-3xl bg-white p-3 shadow-sm">
+            <Button onPress={goPrev}>Prev</Button>
 
-            <Button variant="primary" className="w-full">
-              Analytics
-            </Button>
-          </nav>
+            <Typography type="h5">{label}</Typography>
+
+            <Button onPress={goNext}>Next</Button>
+          </div>
         </div>
-      </aside>
 
-      {/* Main content */}
-      <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        {/* Topbar */}
-        <header className="flex h-16 shrink-0 items-center gap-3 border-b bg-white px-4">
-          <Button
-            isIconOnly
-            variant="primary"
-            className="md:hidden"
-            onPress={() => setSidebarOpen(true)}
-          >
-            <IconPlus />
-          </Button>
-
-          <h1 className="text-xl font-semibold">Dashboard</h1>
-        </header>
-
-        {/* Page content */}
-        <div className="min-h-0 flex-1 overflow-auto p-4">
-          <MainPage />
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 md:flex-row">
+          {mode === "day" ? (
+            <DayChart stats={stats} />
+          ) : (
+            <WeeklyChart stats={stats} selectedDate={selectedDate} />
+          )}
         </div>
-      </main>
-    </div>
+
+        {/* <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
+          <Last7DaysChart selectedDate={selectedDate} mode={mode} />
+        </div> */}
+      </div>
+    </PageTransition>
   );
 };

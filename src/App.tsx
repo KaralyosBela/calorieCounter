@@ -1,13 +1,13 @@
 import Auth from "./components/Auth";
 import { useAuth } from "./hooks/useAuth";
 import { MainPage } from "./components/MainPage";
-import { Dashboard } from "./components/Dashboard";
 import { Header } from "./components/Header";
 import { Routes, Route } from "react-router";
 import { GoalCard } from "./components/GoalCard";
 import { AnimatePresence } from "framer-motion";
 
 import { motion } from "framer-motion";
+import { Dashboard } from "./components/Dashboard";
 
 export const PageTransition = ({ children }: { children: React.ReactNode }) => (
   <motion.div
@@ -47,7 +47,7 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/goalCard" element={<GoalCard />} />
+            <Route path="/goalCard" element={<Dashboard />} />
             {/* <Route path="/analytics" element={<AnalyticsPage />} /> */}
           </Routes>
         </AnimatePresence>
