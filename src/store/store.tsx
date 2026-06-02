@@ -7,6 +7,11 @@ type AppStore = {
   selectedFilter: string;
   searchValue: string;
   setSearchValue: (searchValue: string) => void;
+  //Goals page states
+  proteinGoal: string;
+  calorieGoal: string;
+  setProteinGoal: (proteinGoal: string) => void;
+  setCalorieGoal: (calorieGoal: string) => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -19,4 +24,8 @@ export const useAppStore = create<AppStore>((set) => ({
     }),
   searchValue: "",
   setSearchValue: (searchValue) => set({ searchValue }),
+  proteinGoal: "140",
+  calorieGoal: "1950", //TODO: save this into db
+  setProteinGoal: (proteinGoal) => set({ proteinGoal }),
+  setCalorieGoal: (calorieGoal) => set({ calorieGoal }),
 }));

@@ -1,5 +1,7 @@
-egy tábla, ahol a kajákat felveszem
-egy oldal, ahol a kajákat nap,hét,hónap szerint kimutatom
-dayjs
+db-be kell mentenem a goals, hogy megjegyezze
+protein és kcal csík szineződjön, ha megvan a amennyi kell
+logint re-enable
+responsivitas
 
-protein ugyanígy
+wekkly card csík avg miatt nem kell, lehet oda nem is kéne semmi
+recharton egy gomb ami vált protein/kcal között, vagy akár mindkettő

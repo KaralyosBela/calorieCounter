@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 
 import { motion } from "framer-motion";
 import { Dashboard } from "./components/Dashboard";
+import { SettingsPage } from "./components/SettingsPage";
 
 export const PageTransition = ({ children }: { children: React.ReactNode }) => (
   <motion.div
@@ -47,8 +48,8 @@ export default function App() {
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/goalCard" element={<Dashboard />} />
-            {/* <Route path="/analytics" element={<AnalyticsPage />} /> */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </AnimatePresence>
       </div>

@@ -44,7 +44,7 @@ export const AddFoodForm = () => {
   };
 
   return (
-    <Surface className="rounded-3xl p-4 shadow-lg w-full" variant="default">
+    <Surface className="rounded-3xl p-4 shadow-md w-full" variant="default">
       <Typography type="h5" className="pb-2">
         Add new food
       </Typography>

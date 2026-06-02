@@ -23,7 +23,7 @@ export const Header = () => {
           Database
         </NavLink>
         <NavLink
-          to="/goalCard"
+          to="/dashboard"
           className={({ isActive }) =>
             `${linkClass} ${isActive ? "text-blue-500" : ""}`
           }
@@ -32,7 +32,7 @@ export const Header = () => {
           Charts
         </NavLink>
         <NavLink
-          to="/goalCard"
+          to="/settings"
           className={({ isActive }) =>
             `${linkClass} ${isActive ? "text-blue-500" : ""}`
           }

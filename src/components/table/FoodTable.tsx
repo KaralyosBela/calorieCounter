@@ -37,7 +37,8 @@ export const FoodTable = () => {
     return (
       food.name.toLowerCase().includes(value) ||
       String(food.protein).includes(value) ||
-      String(food.calories).includes(value)
+      String(food.calories).includes(value) ||
+      dayjs(food.createdAt).format("YYYY-MM-DD").includes(value) //TODO: HH:MM too
     );
   });
 

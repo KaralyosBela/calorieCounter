@@ -1,52 +1,14 @@
-import { Button, DateField, Label, Typography } from "@heroui/react";
+import { Button, Card, Typography } from "@heroui/react";
 import { PageTransition } from "../App";
-import { AddFoodForm } from "./AddFoodForm";
 import { DayChart, getStatsBetween } from "./charts/DayChart";
-import { Last7DaysChart } from "./charts/Last7DaysChart";
 import { WeeklyChart } from "./charts/WeeklyChart";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useFoods } from "../hooks/useFoods";
-
-// export const Dashboard = () => {
-//   const { foods } = useFoods();
-//   const [mode, setMode] = useState<"day" | "week">("day");
-//   const [selectedDate, setSelectedDate] = useState(dayjs());
-
-//   const stats = getStatsBetween(
-//     foods,
-//     selectedDate.startOf("day"),
-//     selectedDate.endOf("day"),
-//   );
-//   return (
-//     <PageTransition>
-//       <div className="h-full flex flex-col bg-gray-100 p-4 gap-4 overflow-auto">
-//         <div className="flex items-center justify-between">
-//           <Button onPress={() => setSelectedDate((d) => d.subtract(1, "day"))}>
-//             Prev
-//           </Button>
-
-//           <Typography type="h5">
-//             {selectedDate.isSame(dayjs(), "day")
-//               ? "Today"
-//               : selectedDate.format("YYYY. MM. DD.")}
-//           </Typography>
-
-//           <Button onPress={() => setSelectedDate((d) => d.add(1, "day"))}>
-//             Next
-//           </Button>
-//         </div>
-//         <div className="flex flex-col gap-4 md:flex-row md:w-full md:max-w-7xl md:mx-auto">
-//           <DayChart stats={stats} />
-//           <WeeklyChart />
-//         </div>
-//         <div className="flex flex-col gap-4 md:flex-row md:w-full md:max-w-7xl md:mx-auto">
-//           <Last7DaysChart />
-//         </div>
-//       </div>
-//     </PageTransition>
-//   );
-// };
+import { ArrowRight } from "@gravity-ui/icons";
+import { ArrowLeft } from "@gravity-ui/icons";
+import { CaloriesProteinChart, getChartData } from "./charts/DayBar";
+import type { data } from "react-router";
 
 export const Dashboard = () => {
   const { foods } = useFoods();
@@ -88,33 +50,63 @@ export const Dashboard = () => {
   return (
     <PageTransition>
       <div className="flex h-full flex-col gap-4 overflow-auto bg-gray-100 p-4">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-3">
-          <div className="flex justify-center gap-2">
-            <Button onPress={() => setMode("day")}>Day</Button>
+        <Card className="flex flex-col p-4 w-full max-w-4xl mx-auto rounded-3xl shadow-md bg-gray-50">
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-left gap-2">
+              <Button
+                variant={mode === "day" ? "primary" : "secondary"}
+                onPress={() => setMode("day")}
+              >
+                Daily view
+              </Button>
 
-            <Button onPress={() => setMode("week")}>Week</Button>
+              <Button
+                variant={mode === "week" ? "primary" : "secondary"}
+                onPress={() => setMode("week")}
+              >
+                Weekly view
+              </Button>
+            </div>
+            <div className="flex items-center justify-between rounded-3xl bg-white p-2 shadow-sm">
+              {/* Mobile */}
+              <Button isIconOnly onPress={goPrev} className="md:hidden">
+                <ArrowLeft />
+              </Button>
+
+              {/* Desktop */}
+              <Button onPress={goPrev} className="hidden md:flex">
+                <ArrowLeft />
+                Previous {mode === "day" ? "day" : "week"}
+              </Button>
+
+              <Typography type="h5">{label}</Typography>
+
+              {/* Mobile */}
+              <Button isIconOnly onPress={goNext} className="md:hidden">
+                <ArrowRight />
+              </Button>
+
+              {/* Desktop */}
+              <Button onPress={goNext} className="hidden md:flex">
+                Next {mode === "day" ? "day" : "week"}
+                <ArrowRight />
+              </Button>
+            </div>
           </div>
-
-          <div className="flex items-center justify-between rounded-3xl bg-white p-3 shadow-sm">
-            <Button onPress={goPrev}>Prev</Button>
-
-            <Typography type="h5">{label}</Typography>
-
-            <Button onPress={goNext}>Next</Button>
-          </div>
-        </div>
-
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 md:flex-row">
+        </Card>
+        <Card className="flex flex-col p-4 w-full max-w-4xl mx-auto rounded-3xl shadow-md">
           {mode === "day" ? (
-            <DayChart stats={stats} />
+            <DayChart stats={stats} selectedDate={selectedDate} />
           ) : (
             <WeeklyChart stats={stats} selectedDate={selectedDate} />
           )}
+        </Card>
+        <div className="mx-auto flex w-full max-w-4xl">
+          <CaloriesProteinChart
+            data={getChartData(foods, selectedDate, mode)}
+            mode={mode}
+          />
         </div>
-
-        {/* <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
-          <Last7DaysChart selectedDate={selectedDate} mode={mode} />
-        </div> */}
       </div>
     </PageTransition>
   );
