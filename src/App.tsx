@@ -3,7 +3,6 @@ import { useAuth } from "./hooks/useAuth";
 import { MainPage } from "./components/MainPage";
 import { Header } from "./components/Header";
 import { Routes, Route } from "react-router";
-import { GoalCard } from "./components/GoalCard";
 import { AnimatePresence } from "framer-motion";
 
 import { motion } from "framer-motion";
@@ -36,15 +35,12 @@ export const PageTransition = ({ children }: { children: React.ReactNode }) => (
 export default function App() {
   const session = useAuth();
 
-  // if (!session) return <Auth />;s
+  if (!session) return <Auth />;
 
   return (
-    // <Dashboard />
-    // <div className="h-screen flex flex-col bg-gray-100 overflow-hidden">
     <div className="h-screen flex flex-col overflow-hidden">
       <Header />
-      {/* flex kitölti a maradék helyet, h-full okés ha a parent fullos, flex-1 biztosabb*/}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-auto">
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<MainPage />} />
@@ -56,15 +52,3 @@ export default function App() {
     </div>
   );
 }
-
-// import { Routes, Route } from "react-router";
-
-// export default function App() {
-//   return (
-//     <Routes>
-//       <Route path="/" element={<DashboardPage />} />
-//       <Route path="/foods" element={<FoodsPage />} />
-//       <Route path="/analytics" element={<AnalyticsPage />} />
-//     </Routes>
-//   );
-// }

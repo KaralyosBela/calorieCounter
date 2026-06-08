@@ -8,7 +8,6 @@ import { useFoods } from "../hooks/useFoods";
 import { ArrowRight } from "@gravity-ui/icons";
 import { ArrowLeft } from "@gravity-ui/icons";
 import { CaloriesProteinChart, getChartData } from "./charts/DayBar";
-import type { data } from "react-router";
 
 export const Dashboard = () => {
   const { foods } = useFoods();
@@ -49,7 +48,7 @@ export const Dashboard = () => {
 
   return (
     <PageTransition>
-      <div className="flex h-full flex-col gap-4 overflow-auto bg-gray-100 p-4">
+      <div className="flex flex-col gap-4 bg-gray-100 p-4">
         <Card className="flex flex-col p-4 w-full max-w-4xl mx-auto rounded-3xl shadow-md bg-gray-50">
           <div className="flex flex-col gap-2">
             <div className="flex justify-left gap-2">

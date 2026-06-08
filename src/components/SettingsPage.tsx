@@ -26,7 +26,7 @@ export const SettingsPage = () => {
 
   return (
     <PageTransition>
-      <div className="w-full h-screen bg-gray-100 flex items-start justify-center p-4">
+      <div className="w-full h-full bg-gray-100 flex items-start justify-center p-4">
         <Surface
           className="flex flex-col rounded-3xl p-4 shadow-md w-full max-w-md"
           variant="default"
