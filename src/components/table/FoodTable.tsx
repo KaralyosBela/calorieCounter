@@ -2,11 +2,34 @@ import { Table } from "@heroui/react";
 import { EditFoodForm } from "./EditFoodForm";
 import { useFoods } from "../../hooks/useFoods";
 import { DeleteFoodButton } from "./DeleteFoodButton";
+import { useAppStore } from "../../store/store";
+import dayjs from "dayjs";
 
-export const FoodTable = ({ searchValue }: { searchValue: string }) => {
+export const FoodTable = () => {
   const { foods } = useFoods();
+  const searchValue = useAppStore((state) => state.searchValue);
+  const selectedFilter = useAppStore((state) => state.selectedFilter);
 
-  const filteredFoods = foods.filter((food) => {
+  const dateFilteredFoods = foods.filter((food) => {
+    const foodDate = dayjs(food.createdAt);
+
+    switch (selectedFilter) {
+      case "daily":
+        return foodDate.isSame(dayjs(), "day");
+
+      case "weekly":
+        return foodDate.isSame(dayjs(), "isoWeek");
+
+      case "monthly":
+        return foodDate.isSame(dayjs(), "month");
+
+      case "every":
+      default:
+        return true;
+    }
+  });
+
+  const filteredFoods = dateFilteredFoods.filter((food) => {
     const value = searchValue.trim().toLowerCase();
 
     if (!value) return true;
@@ -14,7 +37,8 @@ export const FoodTable = ({ searchValue }: { searchValue: string }) => {
     return (
       food.name.toLowerCase().includes(value) ||
       String(food.protein).includes(value) ||
-      String(food.calories).includes(value)
+      String(food.calories).includes(value) ||
+      dayjs(food.createdAt).format("YYYY-MM-DD").includes(value) //TODO: HH:MM too
     );
   });
 
@@ -27,7 +51,9 @@ export const FoodTable = ({ searchValue }: { searchValue: string }) => {
               <Table.Column isRowHeader>Name</Table.Column>
               <Table.Column isRowHeader>Protein</Table.Column>
               <Table.Column isRowHeader>Calories</Table.Column>
-              <Table.Column isRowHeader>Date</Table.Column>
+              <Table.Column className="hidden sm:table-cell" isRowHeader>
+                Date
+              </Table.Column>
               <Table.Column className="text-end">Actions</Table.Column>
             </Table.Header>
             <Table.Body>
@@ -36,7 +62,9 @@ export const FoodTable = ({ searchValue }: { searchValue: string }) => {
                   <Table.Cell>{food.name}</Table.Cell>
                   <Table.Cell>{food.protein}</Table.Cell>
                   <Table.Cell>{food.calories}</Table.Cell>
-                  <Table.Cell>{food.createdAt}</Table.Cell>
+                  <Table.Cell className="hidden sm:table-cell">
+                    {food.createdAt}
+                  </Table.Cell>
                   <Table.Cell>
                     <div className="flex items-center justify-end gap-2">
                       <EditFoodForm food={food} />
