@@ -49,7 +49,7 @@ export const Dashboard = () => {
   return (
     <PageTransition>
       <div className="flex flex-col gap-4 bg-gray-100 p-4">
-        <Card className="flex flex-col p-4 w-full max-w-4xl mx-auto rounded-3xl shadow-md bg-gray-50">
+        <Card className="flex flex-col p-4 w-full max-w-4xl mx-auto rounded-3xl shadow-md bg-white">
           <div className="flex flex-col gap-2">
             <div className="flex justify-left gap-2">
               <Button
@@ -66,7 +66,7 @@ export const Dashboard = () => {
                 Weekly view
               </Button>
             </div>
-            <div className="flex items-center justify-between rounded-3xl bg-white p-2 shadow-sm">
+            <div className="flex items-center justify-between bg-white">
               {/* Mobile */}
               <Button isIconOnly onPress={goPrev} className="md:hidden">
                 <ArrowLeft />
