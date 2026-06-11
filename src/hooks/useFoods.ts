@@ -33,6 +33,32 @@ export const useFoods = () => {
     },
   });
 
+  // const addFood = useMutation({
+  //   mutationFn: async ({
+  //     food,
+  //     servingSize,
+  //   }: {
+  //     food: AddFood;
+  //     servingSize: number;
+  //   }) => {
+  //     const rows = Array.from({ length: servingSize }, (_, index) => ({
+  //       name: food.name,
+  //       protein: food.protein / servingSize,
+  //       calories: food.calories / servingSize,
+  //       created_at: dayjs().add(index, "day").format("YYYY-MM-DD HH:mm"),
+  //       // user_id: user?.id,
+  //     }));
+
+  //     const { error } = await supabase.from("foods").insert(rows);
+
+  //     if (error) throw error;
+  //   },
+
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["foods"] });
+  //   },
+  // });
+
   const addFood = useMutation({
     mutationFn: async ({
       food,
@@ -41,11 +67,22 @@ export const useFoods = () => {
       food: AddFood;
       servingSize: number;
     }) => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      console.log(user);
+
+      if (userError) throw userError;
+      if (!user) throw new Error("User is not authenticated");
+
       const rows = Array.from({ length: servingSize }, (_, index) => ({
         name: food.name,
         protein: food.protein / servingSize,
         calories: food.calories / servingSize,
         created_at: dayjs().add(index, "day").format("YYYY-MM-DD HH:mm"),
+        user_id: user.id,
       }));
 
       const { error } = await supabase.from("foods").insert(rows);
