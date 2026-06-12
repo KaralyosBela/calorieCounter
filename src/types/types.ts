@@ -8,6 +8,7 @@ export type FoodFromDb = {
 };
 
 export type Food = {
+  userId: string;
   id: string;
   name: string;
   protein: number;
