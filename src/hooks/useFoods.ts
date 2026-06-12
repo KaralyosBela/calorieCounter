@@ -10,6 +10,7 @@ const mapper = (foods: FoodFromDb[]): Food[] =>
     protein: food.protein,
     calories: food.calories,
     createdAt: dayjs(food.created_at).format("YYYY-MM-DD HH:mm"),
+    userId: food.user_id,
   }));
 
 export const useFoods = () => {
@@ -41,11 +42,20 @@ export const useFoods = () => {
       food: AddFood;
       servingSize: number;
     }) => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError) throw userError;
+      if (!user) throw new Error("User is not authenticated");
+
       const rows = Array.from({ length: servingSize }, (_, index) => ({
         name: food.name,
         protein: food.protein / servingSize,
         calories: food.calories / servingSize,
         created_at: dayjs().add(index, "day").format("YYYY-MM-DD HH:mm"),
+        user_id: user.id,
       }));
 
       const { error } = await supabase.from("foods").insert(rows);
@@ -71,10 +81,18 @@ export const useFoods = () => {
 
   const updateFood = useMutation({
     mutationFn: async ({ id, food }: { id: string; food: AddFood }) => {
-      console.log(food);
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError) throw userError;
+      if (!user) throw new Error("User is not authenticated");
+
       const { error } = await supabase
         .from("foods")
         .update({
+          user_id: user.id,
           name: food.name,
           protein: food.protein,
           calories: food.calories,

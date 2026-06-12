@@ -1,12 +1,14 @@
 export type FoodFromDb = {
   id: string;
+  user_id: string;
   name: string;
   protein: number;
   calories: number;
-  created_at: string | null;
+  created_at: string;
 };
 
 export type Food = {
+  userId: string;
   id: string;
   name: string;
   protein: number;
